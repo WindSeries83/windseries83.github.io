@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src https:">
+<meta name="color-scheme" content="light dark">
+<title>Sélection de véhicules · AutoDeal</title>
+<style>
+/* Layout : une colonne de téléphone. Le texte a des marges, les photos vont bord à bord, le contact du courtier reste collé en bas. */
+:root{
+  --papier:#FFFFFF; --encre:#101F35; --doux:#55607A; --trait:#DCE1EA; --creux:#F3F6FA;
+  --jaune:#F2A93B; --sur-jaune:#101F35; --violet:#8064EB; --barre:rgba(255,255,255,.96); --logo:url("logo-clair.png");
+  --degrade:linear-gradient(90deg,#7C3CFF,#8064EB 45%,#F2A93B);
+  --police:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --papier:#0B1528; --encre:#F3F6FA; --doux:#A7B0C4; --trait:#27334D; --creux:#101F35; --jaune:#F2A93B; --sur-jaune:#101F35; --violet:#A894FF; --barre:rgba(11,21,40,.96); --logo:url("logo-sombre.png"); color-scheme:dark }
+}
+:root[data-theme="dark"]{ --papier:#0B1528; --encre:#F3F6FA; --doux:#A7B0C4; --trait:#27334D; --creux:#101F35; --jaune:#F2A93B; --sur-jaune:#101F35; --violet:#A894FF; --barre:rgba(11,21,40,.96); --logo:url("logo-sombre.png"); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--creux);color:var(--encre);font-family:var(--police);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,p,dl,dd,dt,ul{margin:0;padding:0}
+ul{list-style:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0;text-align:inherit}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+svg{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* la colonne est #page (la maquette disait .col) */
+#page{max-width:440px;margin:0 auto;background:var(--papier);min-height:100dvh;display:flex;flex-direction:column}
+.g{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.large{font-weight:800;letter-spacing:-.025em}
+
+/* La marque : logo AutoDeal et son dégradé violet vers ambre, une seule fois par écran */
+.marque{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
+/* le logo : image de fond pilotée par un jeton, à la place des deux <img> de la maquette */
+.logo{display:block;flex:none;width:177px;height:28px;background:var(--logo) left center/contain no-repeat}
+.filet{height:3px;background:var(--degrade)}
+.avec{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.avec .logo{width:114px;height:18px}
+
+/* Ouverture : qui écrit, ce que c'est, son mot */
+.entete{padding-block:22px 26px;display:flex;flex-direction:column;gap:14px}
+.qui{font-size:14px;font-weight:600}
+.accroche{font-size:clamp(31px,9.4vw,40px);line-height:1.04;text-wrap:balance}
+.mot{font-style:italic;font-size:17px}
+.signe{font-style:italic;color:var(--doux);margin-top:4px}
+
+/* Une voiture dans la sélection */
+.voiture{display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
+.photo{display:block;position:relative;width:100%;aspect-ratio:4/3;background:var(--creux);overflow:hidden}
+.photo img,.vue img{width:100%;height:100%;object-fit:cover;display:block}
+.nb{position:absolute;right:0;bottom:0;background:var(--encre);color:var(--papier);font-size:13px;font-weight:600;padding:6px 10px;font-variant-numeric:tabular-nums}
+.corps{display:flex;flex-direction:column;gap:14px}
+.ligne{display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap}
+.nomv,.prix{font-size:26px;line-height:1.1}
+.prix{white-space:nowrap;font-variant-numeric:tabular-nums}
+.faits{display:flex;flex-wrap:wrap;row-gap:6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.faits li{padding:0 8px;border-left:1px solid var(--trait)}
+.faits li:first-child{padding-left:0;border-left:0}
+.oui{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;background:var(--jaune);color:var(--sur-jaune);font-size:18px;font-weight:800;border-radius:4px;transition:transform .12s ease}
+.oui:active{transform:translateY(2px)}
+.detail{align-self:flex-start;min-height:44px;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--violet)}
+.note{border-left:4px solid var(--jaune);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:2px}
+.note b{font-size:17px}
+.note .detail{margin-top:2px}
+
+/* Bas de page */
+.pied{padding-block:8px 28px;font-size:14px;color:var(--doux);display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--trait);padding-top:20px}
+
+/* Le courtier, toujours à portée de pouce */
+.barre{position:sticky;bottom:0;margin-top:auto;background:var(--barre);border-top:1px solid var(--trait);padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:6px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.barre .n{flex:1;min-width:0}
+.barre .n b{display:block;font-size:17px;line-height:1.2}
+.barre .n span{font-size:14px;color:var(--doux);font-variant-numeric:tabular-nums}
+.barre .oui{flex:1;width:auto;min-height:50px}
+.barre .fait{flex:1;font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+.joindre{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:68px;min-height:50px;font-size:12px;font-weight:600}
+
+/* La fiche d'une voiture */
+.retour{display:inline-flex;align-items:center;gap:4px;min-height:48px;font-size:15px;font-weight:600}
+.retour svg{width:20px;height:20px}
+.cadre{position:relative}
+.galerie{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--creux)}
+.galerie::-webkit-scrollbar{display:none}
+.vue{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;aspect-ratio:4/3;overflow:hidden}
+.fiche{padding-block:20px 36px;display:flex;flex-direction:column;gap:26px}
+.titre{display:flex;flex-direction:column;gap:6px}
+.titre h1{font-size:32px;line-height:1.05}
+.version{color:var(--doux)}
+.titre .prix{font-size:30px;margin-top:6px}
+.table div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--trait)}
+.table div:first-child{border-top:1px solid var(--trait)}
+.table dt{color:var(--doux)}
+.table dd{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.bloc{display:flex;flex-direction:column;gap:8px}
+.bloc h2{font-size:19px}
+.bloc ul{display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion: reduce){.oui{transition:none}}
+
+/* La vraie page : ce que la maquette n'avait pas. */
+/* à la place du <link> Google Fonts de la maquette */
+@font-face{font-family:"Manrope";src:url("manrope.ttf") format("truetype");font-weight:200 800;font-display:swap}
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a.detail{display:inline-flex;align-items:center}
+button:disabled{cursor:default}
+[aria-busy="true"]{opacity:.55;cursor:progress}
+.prix small{font-size:.5em;font-weight:600;color:var(--doux);letter-spacing:.04em}
+.etat{font-weight:700;color:var(--doux)}
+.etat.pour-vous{color:var(--encre)}
+.retour + .logo{width:126px;height:20px}
+.mot,.bloc li{white-space:pre-line}
+.portrait{flex:none;width:40px;height:40px;border-radius:50%;object-fit:cover}
+.coord{overflow-wrap:anywhere;user-select:all}
+.decouvrir{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:underline;text-decoration-color:var(--violet);text-underline-offset:4px}
+/* Impasses : chargement, lien plus valable, erreur, sans JavaScript. */
+.seul{padding-block:48px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.seul h1{font-size:26px;line-height:1.1}
+.seul p{color:var(--doux)}
+.seul .oui{width:auto;padding:0 28px}
+</style>
+</head>
+<body>
+<div id="page"><div class="marque g"><span class="logo" role="img" aria-label="AutoDeal"></span></div><div class="filet"></div><main class="seul g"><p role="status">Chargement…</p><noscript><p>Cette page a besoin de JavaScript pour s’afficher.</p></noscript></main></div>
+<script type="module" src="partage.js"></script>
+</body>
+</html>
