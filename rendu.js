@@ -67,7 +67,7 @@ function presentation(c) {
 function voitureDe(v) {
   const f = v?.fiche ?? {};
   const photos = (Array.isArray(f.photos) ? f.photos : [])
-    .filter((p) => https(p?.vignette) && https(p?.affichage)).slice(0, 10);
+    .filter((p) => https(p?.vignette) && https(p?.affichage)).slice(0, 30); // plafond du serveur
   const prix = Number.isFinite(f.prix) && f.prix > 0
     ? nombre.format(f.prix) + ' €' + (f.prix_ht === true ? ' <small>HT</small>' : '') : '';
   const nomComplet = [fait(f.marque), fait(f.modele)].filter(Boolean).join(' ');
